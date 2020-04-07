@@ -163,6 +163,7 @@ public class Elevator implements FloorObserver {
 			mCurrentDirection = direction;
 		}
 		//hi
+		//hello
 		// TODO: then schedule an immediate state change to DOORS_OPENING.
 	}
 	
