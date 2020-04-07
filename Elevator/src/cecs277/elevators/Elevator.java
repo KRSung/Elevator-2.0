@@ -107,10 +107,11 @@ public class Elevator implements FloorObserver {
 	
 	/**
 	 * Returns true if this elevator is in the idle state.
-	 * @return
 	 */
 	public boolean isIdle() {
-		// TODO: complete this method.
+		if (mCurrentState == ElevatorState.IDLE_STATE){
+			return true;
+		}
 		return false;
 	}
 	
@@ -158,6 +159,9 @@ public class Elevator implements FloorObserver {
 	@Override
 	public void directionRequested(Floor sender, Direction direction) {
 		// TODO: if we are currently idle, change direction to match the request. Then alert all our observers that we are decelerating,
+		if (mCurrentState == ElevatorState.IDLE_STATE){
+			mCurrentDirection = direction;
+		}
 		// TODO: then schedule an immediate state change to DOORS_OPENING.
 	}
 	
