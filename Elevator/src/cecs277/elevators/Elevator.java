@@ -162,8 +162,8 @@ public class Elevator implements FloorObserver {
 		if (mCurrentState == ElevatorState.IDLE_STATE){
 			mCurrentDirection = direction;
 		}
-		//hi
 		// TODO: then schedule an immediate state change to DOORS_OPENING.
+		mCurrentState = ElevatorState.DOORS_OPENING;
 	}
 	
 	
@@ -178,5 +178,3 @@ public class Elevator implements FloorObserver {
 	}
 	
 }
-
-// useless comment
