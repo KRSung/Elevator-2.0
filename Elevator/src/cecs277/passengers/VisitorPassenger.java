@@ -25,10 +25,14 @@ public class VisitorPassenger extends Passenger {
 		return -1;
 	}
 	
-	// TODO: implement this template method variant. A Visitor will join an elevator whose passenger count is less than its capacity.
+	// DONE: implement this template method variant. A Visitor will join an elevator whose passenger count is less than its capacity.
 	@Override
 	protected boolean willBoardElevator(Elevator elevator) {
-		return false;
+		if (elevator.getPassengerCount < 10){
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/*

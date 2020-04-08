@@ -50,7 +50,7 @@ public abstract class Passenger implements FloorObserver, ElevatorObserver {
 		// This is a sanity check. A Passenger should never be observing a Floor they are not waiting on.
 		if (floor.getWaitingPassengers().contains(this) && mCurrentState == PassengerState.WAITING_ON_FLOOR) {
 			Elevator.Direction elevatorDirection = elevator.getCurrentDirection();
-			
+
 			// TODO: check if the elevator is either NOT_MOVING, or is going in the direction that this passenger wants.
 			// If so, this passenger becomes an observer of the elevator.
 			
@@ -70,27 +70,33 @@ public abstract class Passenger implements FloorObserver, ElevatorObserver {
 		// The elevator is arriving at our destination. Remove ourselves from the elevator, and stop observing it.
 		// Does NOT handle any "next" destination...
 		if (mCurrentState == PassengerState.ON_ELEVATOR && elevator.getCurrentFloor().getNumber() == getDestination()) {
-			// TODO: remove this passenger from the elevator, and as an observer of the elevator. Call the
+			// DONE (almost): remove this passenger from the elevator, and as an observer of the elevator. Call the
 			// leavingElevator method to allow a derived class to do something when the passenger departs.
 			// Set the current state to BUSY.
-			
-			
-			
-			
+			elevator.removePassenger(this);
+			//IDK if this will work because we need to pass in a ElevatorObserver but i think passenger is a elevator observer??
+			elevator.removeObserver(this);
+			leavingElevator(elevator);
+			setState(PassengerState.BUSY);
 		}
+
 		// The elevator has arrived on the floor we are waiting on. If the elevator has room for us, remove ourselves
 		// from the floor, and enter the elevator.
 		else if (mCurrentState == PassengerState.WAITING_ON_FLOOR) {
-			// TODO: determine if the passenger will board the elevator using willBoardElevator.
+			// DONE (almost): determine if the passenger will board the elevator using willBoardElevator.
 			// If so, remove the passenger from the current floor, and as an observer of the current floor;
 			// then add the passenger as an observer of and passenger on the elevator. Then set the mCurrentState
 			// to ON_ELEVATOR.
-			
-			
-			
-			
-			
-			
+			if (willBoardElevator(elevator)){
+				currentFloor = elevator.getCurrentFloor;
+				currentFloor.removeWaitingPassenger(this);
+				//IDK if this will work because we need to pass in a FloorObserver but i think passenger is a floor observer??
+				currentFloor.removeObserver(this);
+				elevator.addPassenger(this);
+				//Same thing as IDK here
+				elevator.addObserver(this);
+				setState(PassengerState.ON_ELEVATOR);
+			}
 			
 		}
 	}

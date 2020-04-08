@@ -23,10 +23,14 @@ public class WorkerPassenger extends Passenger {
 		return -1;
 	}
 	
-	// TODO: implement this template method variant. A Worker will only join an elevator with at most 3 people on it.
+	// DONE: implement this template method variant. A Worker will only join an elevator with at most 3 people on it.
 	@Override
 	protected boolean willBoardElevator(Elevator elevator) {
-		return false;
+		if (elevator.getPassengerCount > 3){
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	/*
