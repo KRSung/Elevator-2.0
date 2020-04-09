@@ -35,7 +35,6 @@ public class Building implements ElevatorObserver, FloorObserver {
 	}
 	
 
-=======
 	// DONE: recreate your toString() here.
 	public String toString(){
 		StringBuilder visualRepresentation = new StringBuilder();
@@ -77,8 +76,6 @@ public class Building implements ElevatorObserver, FloorObserver {
 		return visualRepresentation.toString();
 	}
 	
-	
->>>>>>> 9ba29c991408f6edbcbb09ca53a8ac6539dfb825
 	public int getFloorCount() {
 		return mFloors.size();
 	}
