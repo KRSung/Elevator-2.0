@@ -83,7 +83,8 @@ public class Simulation {
 				System.out.println(nextEvent);
 			}
 
-			// TODO: print the Building after simulating the requested time.
+			// DONE: print the Building after simulating the requested time.
+			b.toString();
 
 			//i didnt want to check with an if statement each iteration
 			//if you prefer that way or have a better way we can change it

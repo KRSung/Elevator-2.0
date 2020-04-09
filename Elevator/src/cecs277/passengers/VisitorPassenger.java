@@ -12,7 +12,8 @@ import cecs277.events.PassengerNextDestinationEvent;
  */
 public class VisitorPassenger extends Passenger {
 	// TODO: add fields, constructors, and accessors to implement this class.
-	
+	private int destinationFloor, durationTime;
+
 	public VisitorPassenger(int destinationFloor, int durationTime) {
 		super();
 		// TODO: change this constructor's  body.

@@ -36,8 +36,8 @@ public class Building implements ElevatorObserver, FloorObserver {
 	
 
 	// TODO: recreate your toString() here.
-	
-	
+
+
 	public int getFloorCount() {
 		return mFloors.size();
 	}

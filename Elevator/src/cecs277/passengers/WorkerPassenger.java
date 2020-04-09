@@ -3,6 +3,7 @@ package cecs277.passengers;
 import cecs277.elevators.Elevator;
 import cecs277.events.PassengerNextDestinationEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,17 +11,20 @@ import java.util.List;
  * each duration corresponding to the time they "disappear" after reaching each of the destination floors.
  */
 public class WorkerPassenger extends Passenger {
-	// TODO: add fields for the list of destination floors, and the list of duration amounts.
-	
+	// DONE: add fields for the list of destination floors, and the list of duration amounts.
+	private ArrayList<Integer> destinations;
+	private ArrayList<Long> durations;
+
 	public WorkerPassenger(List<Integer> destinations, List<Long> durations) {
 		super();
 	
 		// TODO: finish the constructor.
 	}
-	// TODO: implement this method. Return the current destination, which is the first element of the destinations list.
+
+	// DONE: implement this method. Return the current destination, which is the first element of the destinations list.
 	@Override
 	public int getDestination() {
-		return -1;
+		return destinations.get(0);
 	}
 	
 	// DONE: implement this template method variant. A Worker will only join an elevator with at most 3 people on it.
