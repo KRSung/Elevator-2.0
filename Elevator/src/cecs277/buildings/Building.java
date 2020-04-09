@@ -101,8 +101,9 @@ public class Building implements ElevatorObserver, FloorObserver {
 	
 	@Override
 	public void elevatorWentIdle(Elevator elevator) {
-		// TODO: if mWaitingFloors is not empty, remove the first entry from the queue and dispatch the elevator to that floor.
-		if (mWaitingFloors.isEmpty()){
+		// DONE: if mWaitingFloors is not empty, remove the first entry from the queue and dispatch the elevator to that floor.
+		//added the !
+		if (!mWaitingFloors.isEmpty()){
 			elevator.dispatchTo(mFloors.get(mWaitingFloors.remove()));
 		}
 	}
@@ -112,13 +113,15 @@ public class Building implements ElevatorObserver, FloorObserver {
 		if (!mWaitingFloors.contains(sender.getNumber())){
 			mWaitingFloors.add(sender.getNumber());
 		}
-		// TODO: add the floor mWaitingFloors if it is not already in the queue.
+		// DONE: add the floor mWaitingFloors if it is not already in the queue.
 	}
 	
 	@Override
 	public void directionRequested(Floor floor, Elevator.Direction direction) {
 		boolean elevatorDispatched = false;
 
+
+		//TODO i wonder if we should break after dispatching one elevator or if it should be a race between elevators lol
 		for(Elevator e: mElevators){
 			if (e.isIdle()){
 				e.dispatchTo(floor);
@@ -130,7 +133,7 @@ public class Building implements ElevatorObserver, FloorObserver {
 			mWaitingFloors.add(floor.getNumber());
 		}
 
-		// TODO: go through each elevator. If an elevator is idle, dispatch it to the given floor.
-		// TODO: if no elevators are idle, then add the floor number to the mWaitingFloors queue.
+		// DONE: go through each elevator. If an elevator is idle, dispatch it to the given floor.
+		// DONE: if no elevators are idle, then add the floor number to the mWaitingFloors queue.
 	}
 }

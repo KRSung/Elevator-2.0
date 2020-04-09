@@ -16,7 +16,9 @@ public class VisitorPassenger extends Passenger {
 
 	public VisitorPassenger(int destinationFloor, int durationTime) {
 		super();
-		// TODO: change this constructor's  body.
+		// DONE: change this constructor's  body.
+		this.destinationFloor = destinationFloor;
+		this.durationTime = durationTime;
 	}
 	
 	@Override

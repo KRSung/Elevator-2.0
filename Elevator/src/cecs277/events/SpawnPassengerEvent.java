@@ -6,6 +6,7 @@ import cecs277.Simulation;
 import cecs277.passengers.VisitorPassenger;
 import cecs277.passengers.WorkerPassenger;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -59,29 +60,54 @@ public class SpawnPassengerEvent extends SimulationEvent {
 	
 	private Passenger getVisitor() {
 		/*
-		 TODO: construct a VisitorPassenger and return it.
+		 DONE: construct a VisitorPassenger and return it.
 		 The visitor should have a random destination floor that is not floor 1 (generate a random int from 2 to N).
 		 The visitor's visit duration should follow a NORMAL (GAUSSIAN) DISTRIBUTION with a mean of 1 hour
 		 and a standard deviation of 20 minutes.
 		 */
 		Random r = mBuilding.getSimulation().getRandom();
+		int x = r.nextInt(mBuilding.getFloorCount() - 1) + 2;
 		// Look up the documentation for the .nextGaussian() method of the Random class.
-		
-		return null;
+		//source: https://www.javamex.com/tutorials/random_numbers/gaussian_distribution_2.shtml
+		int y = (int) (r.nextGaussian() * 20 + 60);
+		return new VisitorPassenger(x, y);
 	}
 	
 	private Passenger getWorker() {
 		/*
-		TODO: construct and return a WorkerPassenger. A Worker requires a list of destinations and a list of durations.
+		DONE: construct and return a WorkerPassenger. A Worker requires a list of destinations and a list of durations.
 		To generate the list of destinations, first generate a random number from 2 to 5 inclusive. Call this "X",
 		how many floors the worker will visit before returning to floor 1.
 		X times, generate an integer from 2 to N (number of floors) that is NOT THE SAME as the previously-generated floor.
 		Add those X integers to a list.
+		//TODO this part with the duration may be wrong
 		To generate the list of durations, generate X integers using a NORMAL DISTRIBUTION with a mean of 10 minutes
 		and a standard deviation of 3 minutes.
 		 */
 		Random r = mBuilding.getSimulation().getRandom();
-		
-		return null;
+		ArrayList<Integer> destinations = new ArrayList<>();
+		ArrayList<Long> durations = new ArrayList<>();
+
+		int x = r.nextInt(4) + 2;
+
+		int last = -1, j;
+		for (int i = 0; i < x; i++){
+			do {
+				j = r.nextInt(mBuilding.getFloorCount() - 1) + 2;
+			} while (j == last);
+			destinations.add(j);
+			last = j;
+		}
+		//adds final floor 1, Im not sure if he wants it here or in visitor/worker class file
+		destinations.add(1);
+
+		//TODO i may have not done this right bc look at the private static long variables i didnt use and the other imported stuff not used
+		long y;
+		for (int i = 0; i < x; i++){
+			y = (long) (r.nextGaussian() * 3 + 10);
+			durations.add(y);
+		}
+
+		return new WorkerPassenger(destinations, durations);
 	}
 }
