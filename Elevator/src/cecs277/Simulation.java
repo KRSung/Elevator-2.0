@@ -55,7 +55,7 @@ public class Simulation {
 		
 		// DONE: the simulation currently stops at 200s. Instead, ask the user how long they want to simulate.
 		System.out.println("Enter time in seconds to simulate: ");
-		nextSimLength = s.nextInt();
+		nextSimLength = input.nextInt();
 
 		while(nextSimLength != -1) {
 			long nextStopTime = mCurrentTime + nextSimLength;
@@ -88,7 +88,7 @@ public class Simulation {
 			//i didnt want to check with an if statement each iteration
 			//if you prefer that way or have a better way we can change it
 			System.out.println("Enter time in seconds to simulate: ");
-			nextSimLength = s.nextInt();
+			nextSimLength = input.nextInt();
 		}
 		/*
 		 DONE: the simulation stops after one round of simulation. Write a loop that continues to ask the user

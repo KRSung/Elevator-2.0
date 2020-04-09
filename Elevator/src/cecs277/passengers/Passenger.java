@@ -88,7 +88,7 @@ public abstract class Passenger implements FloorObserver, ElevatorObserver {
 			// then add the passenger as an observer of and passenger on the elevator. Then set the mCurrentState
 			// to ON_ELEVATOR.
 			if (willBoardElevator(elevator)){
-				currentFloor = elevator.getCurrentFloor();
+				Floor currentFloor = elevator.getCurrentFloor();
 				currentFloor.removeWaitingPassenger(this);
 				//IDK if this will work because we need to pass in a FloorObserver but i think passenger is a floor observer??
 				currentFloor.removeObserver(this);

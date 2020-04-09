@@ -13,7 +13,8 @@ public class Floor implements ElevatorObserver {
 	private int mNumber;
 	
 	// TODO: declare a field(s) to help keep track of which direction buttons are currently pressed.
-	private Elevator.Direction mDirection[] = {Elevator.Direction.NOT_MOVING, Elevator.Direction.NOT_MOVING};
+	private boolean upButtonPressed = false;
+	private boolean downButtonPressed = false;
 	// You can assume that every floor has both up and down buttons, even the ground and top floors.
 	
 	public Floor(int number, Building building) {
@@ -28,6 +29,13 @@ public class Floor implements ElevatorObserver {
 	 * @param direction
 	 */
 	public void requestDirection(Elevator.Direction direction) {
+		if (direction == Elevator.Direction.MOVING_UP) {
+			upButtonPressed = true;
+		}
+		else if (direction == Elevator.Direction.MOVING_DOWN) {
+			downButtonPressed = true;
+		}
+
 		// TODO: implement this method as described in the comment.
 	}
 	
@@ -35,10 +43,11 @@ public class Floor implements ElevatorObserver {
 	 * Returns true if the given direction button has been pressed.
 	 */
 	public boolean directionIsPressed(Elevator.Direction direction) {
-		if (mDirection[0] != Elevator.Direction.NOT_MOVING || mDirection[1] != Elevator.Direction.NOT_MOVING){
+		if (upButtonPressed && Elevator.Direction.MOVING_UP == direction ||
+				downButtonPressed && Elevator.Direction.MOVING_DOWN == direction){
 			return true;
 		}
-		// TODO: complete this method.
+		// Done: complete this method.
 		return false;
 	}
 	
@@ -46,7 +55,13 @@ public class Floor implements ElevatorObserver {
 	 * Clears the given direction button so it is no longer pressed.
 	 */
 	public void clearDirection(Elevator.Direction direction) {
-		// TODO: complete this method.
+		if (direction == Elevator.Direction.MOVING_UP) {
+			upButtonPressed = false;
+		}
+		else if (direction == Elevator.Direction.MOVING_DOWN) {
+			downButtonPressed = false;
+		}
+		// Done: complete this method.
 	}
 	
 	/**
