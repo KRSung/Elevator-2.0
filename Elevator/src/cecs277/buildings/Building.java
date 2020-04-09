@@ -35,7 +35,46 @@ public class Building implements ElevatorObserver, FloorObserver {
 	}
 	
 
-	// TODO: recreate your toString() here.
+	// DONE: recreate your toString() here.
+	public String toString(){
+		StringBuilder visualRepresentation = new StringBuilder();
+		for (int i = getFloorCount(); i > 0; i--){
+
+//            adds a padding so the floor numbers line up visually
+			if (i < 10){
+				visualRepresentation.append("  ").append(i).append(":  |");
+			}
+			else if(i < 100){
+				visualRepresentation.append(" ").append(i).append(":  |");
+			}
+			else{
+				visualRepresentation.append(i).append(":  |");
+			}
+
+			for(int j = 0; j < mElevators.size(); j++){
+				if(mElevators.get(j).getCurrentFloor().getNumber() == i){
+					visualRepresentation.append(" X |");
+				}
+				else{
+					visualRepresentation.append("   |");
+				}
+			}
+
+			visualRepresentation.append(" ");
+
+//            displays the passengers waiting on the building floor
+			for(int k = 0; k < getFloorCount(); k++){
+				visualRepresentation.append(" ").append(mFloors.get(k));
+			}
+
+			visualRepresentation.append("\n");
+		}
+
+		for (int i = 0; i < mElevators.size(); i++){
+			visualRepresentation.append(mElevators.get(i)).append("\n");
+		}
+		return visualRepresentation.toString();
+	}
 	
 	
 	public int getFloorCount() {
