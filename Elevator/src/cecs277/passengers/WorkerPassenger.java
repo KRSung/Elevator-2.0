@@ -26,7 +26,7 @@ public class WorkerPassenger extends Passenger {
 	// DONE: implement this template method variant. A Worker will only join an elevator with at most 3 people on it.
 	@Override
 	protected boolean willBoardElevator(Elevator elevator) {
-		if (elevator.getPassengerCount > 3){
+		if (elevator.getPassengerCount() > 3){
 			return false;
 		} else {
 			return true;
@@ -53,7 +53,7 @@ public class WorkerPassenger extends Passenger {
 	// TODO: return "Worker heading to floor {destination}", replacing {destination} with the first destination floor number.
 	@Override
 	public String toString() {
-		return "";
+		return "Worker heading to floor " + getDestination() + ".";
 	}
 	
 }

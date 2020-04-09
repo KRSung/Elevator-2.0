@@ -53,7 +53,7 @@ public abstract class Passenger implements FloorObserver, ElevatorObserver {
 
 			// TODO: check if the elevator is either NOT_MOVING, or is going in the direction that this passenger wants.
 			// If so, this passenger becomes an observer of the elevator.
-			
+
 		}
 		// This else should not happen if your code is correct. Do not remove this branch; it reveals errors in your code.
 		else {
@@ -88,7 +88,7 @@ public abstract class Passenger implements FloorObserver, ElevatorObserver {
 			// then add the passenger as an observer of and passenger on the elevator. Then set the mCurrentState
 			// to ON_ELEVATOR.
 			if (willBoardElevator(elevator)){
-				currentFloor = elevator.getCurrentFloor;
+				currentFloor = elevator.getCurrentFloor();
 				currentFloor.removeWaitingPassenger(this);
 				//IDK if this will work because we need to pass in a FloorObserver but i think passenger is a floor observer??
 				currentFloor.removeObserver(this);

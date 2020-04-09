@@ -48,10 +48,13 @@ public class SpawnPassengerEvent extends SimulationEvent {
 		mBuilding.getFloor(1).addWaitingPassenger(mPassenger);
 
 		/*
-		 TODO: schedule the new SpawnPassengerEvent with the simulation. Construct a new SpawnPassengerEvent
+		 DONE (i think): schedule the new SpawnPassengerEvent with the simulation. Construct a new SpawnPassengerEvent
 		 with a scheduled time that is X seconds in the future, where X is a uniform random integer from
 		 1 to 30 inclusive.
 		*/
+		// we have to somehow schedule this like in simulation.java line 46-47, but idk how because i dont think we have access to that here
+		// new SpawnPassengerEvent(r.nextInt(30) + 1, mBuilding);
+
 	}
 	
 	
