@@ -12,7 +12,7 @@ public class Floor implements ElevatorObserver {
 	private ArrayList<FloorObserver> mObservers = new ArrayList<>();
 	private int mNumber;
 	
-	// TODO: declare a field(s) to help keep track of which direction buttons are currently pressed.
+	// Done: declare a field(s) to help keep track of which direction buttons are currently pressed.
 	private boolean upButtonPressed = false;
 	private boolean downButtonPressed = false;
 	// You can assume that every floor has both up and down buttons, even the ground and top floors.
@@ -29,26 +29,32 @@ public class Floor implements ElevatorObserver {
 	 * @param direction
 	 */
 	public void requestDirection(Elevator.Direction direction) {
-		if (direction == Elevator.Direction.MOVING_UP) {
+		if (direction == Elevator.Direction.MOVING_UP && !upButtonPressed) {
 			upButtonPressed = true;
+			for( FloorObserver floor: mObservers ){
+				floor.directionRequested(this, Elevator.Direction.MOVING_UP);
+			}
 		}
-		else if (direction == Elevator.Direction.MOVING_DOWN) {
+		else if (direction == Elevator.Direction.MOVING_DOWN && !downButtonPressed) {
 			downButtonPressed = true;
+			for( FloorObserver floor: mObservers ){
+				floor.directionRequested(this, Elevator.Direction.MOVING_DOWN);
+			}
 		}
 
-		// TODO: implement this method as described in the comment.
+		// Done: implement this method as described in the comment.
 	}
 	
 	/**
 	 * Returns true if the given direction button has been pressed.
 	 */
 	public boolean directionIsPressed(Elevator.Direction direction) {
-		if (upButtonPressed && Elevator.Direction.MOVING_UP == direction ||
-				downButtonPressed && Elevator.Direction.MOVING_DOWN == direction){
+		if ((upButtonPressed && Elevator.Direction.MOVING_UP == direction) ||
+				(downButtonPressed && Elevator.Direction.MOVING_DOWN == direction)){
 			return true;
 		}
-		// Done: complete this method.
 		return false;
+		// Done: complete this method.
 	}
 	
 	/**
@@ -71,8 +77,16 @@ public class Floor implements ElevatorObserver {
 		mPassengers.add(p);
 		addObserver(p);
 		p.setState(Passenger.PassengerState.WAITING_ON_FLOOR);
+		int pDestination = p.getDestination();
+
+		if (pDestination > getNumber()){
+			upButtonPressed = true;
+		}
+		else{
+			downButtonPressed = true;
+		}
 		
-		// TODO: call requestDirection with the appropriate direction for this passenger's destination.
+		// Done: call requestDirection with the appropriate direction for this passenger's destination.
 	}
 	
 	/**
@@ -109,9 +123,12 @@ public class Floor implements ElevatorObserver {
 	// Observer methods.
 	@Override
 	public void elevatorDecelerating(Elevator elevator) {
-		// TODO: if the elevator is arriving at THIS FLOOR, alert all the floor's observers that elevatorArriving.
-		// TODO:    then clear the elevator's current direction from this floor's requested direction buttons.
-		clearDirection(Elevator.Direction.NOT_MOVING);
+		// Done: if the elevator is arriving at THIS FLOOR, alert all the floor's observers that elevatorArriving.
+		for(FloorObserver floor: mObservers){
+			floor.elevatorArriving(this, elevator);
+		}
+		// Done: then clear the elevator's current direction from this floor's requested direction buttons.
+		clearDirection(elevator.getCurrentDirection());
 	}
 	
 	@Override
