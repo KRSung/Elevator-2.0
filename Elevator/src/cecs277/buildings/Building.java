@@ -121,7 +121,7 @@ public class Building implements ElevatorObserver, FloorObserver {
 		boolean elevatorDispatched = false;
 
 
-		//TODO i wonder if we should break after dispatching one elevator or if it should be a race between elevators lol
+		//DONE i wonder if we should break after dispatching one elevator or if it should be a race between elevators lol
 		for(Elevator e: mElevators){
 			if (e.isIdle()){
 				e.dispatchTo(floor);
