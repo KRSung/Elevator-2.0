@@ -77,7 +77,179 @@ public class Elevator implements FloorObserver {
 	public void tick() {
 		// TODO: port the logic of your state changes from Project 1, accounting for the adjustments in the spec.
 		// TODO: State changes are no longer immediate; they are scheduled using scheduleStateChange().
-		
+		ArrayList<Integer> tempList = mBuilding.getFloor(mCurrentFloor);
+		switch (mCurrentState) {
+			case IDLE_STATE:
+				if (!tempList.isEmpty()) {
+					//checks to see if anyone is waiting for elevator on current floor
+					mCurrentState = ElevatorState.DOORS_OPENING;
+				}
+				return;
+			case DOORS_OPENING:
+				if (mPassengers.contains(mCurrentFloor)) {
+					//checks to see if anyone in elevator wants to get off on current floor
+					mCurrentState = ElevatorState.UNLOADING_PASSENGERS;
+				}
+				else {
+					mCurrentState = ElevatorState.LOADING_PASSENGERS;
+				}
+				return;
+			case UNLOADING_PASSENGERS:
+				while (mPassengers.contains(mCurrentFloor)) {
+					//removes passengers if people want to get off
+					mPassengers.remove((Integer) (mCurrentFloor));
+				}
+				if (mPassengers.isEmpty() && !tempList.isEmpty()) {
+					//if no passengers and people are waiting
+					mCurrentDirection = Direction.NOT_MOVING;
+					mCurrentState = ElevatorState.LOADING_PASSENGERS;
+				} else if (mPassengers.isEmpty() && tempList.isEmpty()){
+					//else if no passengers and no people waiting
+					mCurrentState = ElevatorState.DOORS_CLOSING;
+					mCurrentDirection = Direction.NOT_MOVING;
+				} else if (mCurrentDirection == Direction.MOVING_UP){
+					//if passengers going up and waiting going up
+					if (tempList.isEmpty()) {
+						mCurrentState = ElevatorState.DOORS_CLOSING;
+					} else {
+						for (int person : tempList) {
+							if (person > mCurrentFloor) {
+								mCurrentState = ElevatorState.LOADING_PASSENGERS;
+								break;
+							} else {
+								mCurrentState = ElevatorState.DOORS_CLOSING;
+							}
+						}
+					}
+				} else if (mCurrentDirection == Direction.MOVING_DOWN) {
+					//if passengers going down and waiting going down
+					if (tempList.isEmpty()) {
+						mCurrentState = ElevatorState.DOORS_CLOSING;
+					} else {
+						for (int person : tempList) {
+							if (person < mCurrentFloor) {
+								mCurrentState = ElevatorState.LOADING_PASSENGERS;
+								break;
+							} else {
+								mCurrentState = ElevatorState.DOORS_CLOSING;
+							}
+						}
+					}
+				}
+				return;
+			case LOADING_PASSENGERS:
+				if (mCurrentDirection == Direction.MOVING_UP) {
+					//going up get all going up
+					for (int waiter : tempList) {
+						if (waiter > mCurrentFloor) {
+							mPassengers.add(waiter);
+						}
+					}
+					//removing
+					for (int i = tempList.size() - 1; i >= 0; i--){
+						if (tempList.get(i) > mCurrentFloor){
+							tempList.remove(i);
+						}
+					}
+				} else if (mCurrentDirection == Direction.MOVING_DOWN) {
+					//going down get all going down
+					for (int waiter : tempList) {
+						if (waiter < mCurrentFloor) {
+							mPassengers.add(waiter);
+						}
+					}
+					//removing
+					for (int i = tempList.size() - 1; i >= 0; i--){
+						if (tempList.get(i) < mCurrentFloor){
+							tempList.remove(i);
+						}
+					}
+				} else if (mCurrentDirection == Direction.NOT_MOVING && !tempList.isEmpty()){
+					//not moving
+					int next = tempList.get(0);
+					//get new direction
+					if (next > mCurrentFloor) {
+						mCurrentDirection = Direction.MOVING_UP;
+						//going up get all going up
+						for (int waiter : tempList) {
+							if (waiter > mCurrentFloor) {
+								mPassengers.add(waiter);
+							}
+						}
+						//removing
+						for (int i = tempList.size() - 1; i >= 0; i--){
+							if (tempList.get(i) > mCurrentFloor){
+								tempList.remove(i);
+							}
+						}
+					} else{
+						//get new direction
+						mCurrentDirection = Direction.MOVING_DOWN;
+						//going down get all going down
+						for (int waiter : tempList) {
+							if (waiter < mCurrentFloor) {
+								mPassengers.add(waiter);
+							}
+						}
+						//removing
+						for (int i = tempList.size() - 1; i >= 0; i--){
+							if (tempList.get(i) < mCurrentFloor){
+								tempList.remove(i);
+							}
+						}
+					}
+				}
+				//doors close will always be next
+				mCurrentState = ElevatorState.DOORS_CLOSING;
+				return;
+			case DOORS_CLOSING:
+				if (mPassengers.isEmpty()){
+					//if empty
+					mCurrentState = ElevatorState.IDLE_STATE;
+				} else {
+					//people on accelerate
+					mCurrentState = ElevatorState.ACCELERATING;
+				}
+				return;
+			case ACCELERATING:
+				//go to moving
+				mCurrentState = ElevatorState.MOVING;
+				return;
+			case MOVING:
+				ArrayList<Integer> nextFloor;
+				if (mCurrentDirection == Direction.MOVING_UP){
+					mCurrentFloor++;
+					nextFloor = mBuilding.getFloor(mCurrentFloor);
+					if (mPassengers.contains(mCurrentFloor)){
+						mCurrentState = ElevatorState.DECELERATING;
+						break;
+					}
+					for (int waiter : nextFloor) {
+						if (waiter > mCurrentFloor) {
+							mCurrentState = ElevatorState.DECELERATING;
+						}
+					}
+				} else {
+					mCurrentFloor--;
+					nextFloor = mBuilding.getFloor(mCurrentFloor);
+					if (mPassengers.contains(mCurrentFloor)){
+						mCurrentState = ElevatorState.DECELERATING;
+						break;
+					}
+					for (int waiter : nextFloor) {
+						if (waiter < mCurrentFloor) {
+							mCurrentState = ElevatorState.DECELERATING;
+						}
+					}
+				}
+				return;
+			case DECELERATING:
+				mCurrentState = ElevatorState.DOORS_OPENING;
+				if (mPassengers.isEmpty()){
+					mCurrentDirection = Direction.NOT_MOVING;
+				}
+				return;
+		}
 		// Example of how to trigger a state change:
 		// scheduleStateChange(ElevatorState.MOVING, 3); // switch to MOVING and call tick(), 3 seconds from now.
 	}

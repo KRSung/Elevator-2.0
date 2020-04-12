@@ -23,9 +23,11 @@ public class VisitorPassenger extends Passenger {
 	
 	@Override
 	public int getDestination() {
-		// TODO: finish this method to return the visitor's destination, which changes to floor 1 when they
+		// DONE: finish this method to return the visitor's destination, which changes to floor 1 when they
 		// "reappear".
-		return -1;
+		int temp = destinationFloor;
+		destinationFloor = 1;
+		return temp;
 	}
 	
 	// DONE: implement this template method variant. A Visitor will join an elevator whose passenger count is less than its capacity.

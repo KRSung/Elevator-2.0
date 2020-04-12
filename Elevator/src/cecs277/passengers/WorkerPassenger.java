@@ -12,19 +12,21 @@ import java.util.List;
  */
 public class WorkerPassenger extends Passenger {
 	// DONE: add fields for the list of destination floors, and the list of duration amounts.
-	private ArrayList<Integer> destinations;
-	private ArrayList<Long> durations;
+	private ArrayList<Integer> mDestinations;
+	private ArrayList<Long> mDurations;
 
 	public WorkerPassenger(List<Integer> destinations, List<Long> durations) {
 		super();
 	
-		// TODO: finish the constructor.
+		// DONE: finish the constructor.
+		this.mDestinations = (ArrayList<Integer>) destinations;
+		this.mDurations = (ArrayList<Long>) durations;
 	}
 
 	// DONE: implement this method. Return the current destination, which is the first element of the destinations list.
 	@Override
 	public int getDestination() {
-		return destinations.get(0);
+		return mDestinations.get(0);
 	}
 	
 	// DONE: implement this template method variant. A Worker will only join an elevator with at most 3 people on it.
@@ -46,7 +48,9 @@ public class WorkerPassenger extends Passenger {
 	*/
 	@Override
 	protected void leavingElevator(Elevator elevator) {
-	
+		if (){
+
+		}
 	}
 	
 	@Override
@@ -54,7 +58,7 @@ public class WorkerPassenger extends Passenger {
 		// Don't care.
 	}
 	
-	// TODO: return "Worker heading to floor {destination}", replacing {destination} with the first destination floor number.
+	// DONE: return "Worker heading to floor {destination}", replacing {destination} with the first destination floor number.
 	@Override
 	public String toString() {
 		return "Worker heading to floor " + getDestination() + ".";
