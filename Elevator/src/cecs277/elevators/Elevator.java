@@ -39,7 +39,8 @@ public class Elevator implements FloorObserver {
 	
 	private List<ElevatorObserver> mObservers = new ArrayList<>();
 	
-	// TODO: declare a field to keep track of which floors have been requested by passengers.
+	// Done: declare a field to keep track of which floors have been requested by passengers.
+	private Set<Integer> mRequestedFloors = new HashSet<Integer>();
 	
 	
 	public Elevator(int number, Building bld) {
@@ -62,8 +63,9 @@ public class Elevator implements FloorObserver {
 	 * Adds the given passenger to the elevator's list of passengers, and requests the passenger's destination floor.
 	 */
 	public void addPassenger(Passenger passenger) {
-		// TODO: add the passenger's destination to the set of requested floors.
+		// Done: add the passenger's destination to the set of requested floors.
 		mPassengers.add(passenger);
+		mRequestedFloors.add(passenger.getDestination());
 	}
 	
 	public void removePassenger(Passenger passenger) {
@@ -87,8 +89,18 @@ public class Elevator implements FloorObserver {
 	 * Sends an idle elevator to the given floor.
 	 */
 	public void dispatchTo(Floor floor) {
-		// TODO: if we are currently idle and not on the given floor, change our direction to move towards the floor.
-		// TODO: set a floor request for the given floor, and schedule a state change to ACCELERATING immediately.
+		// Done: if we are currently idle and not on the given floor, change our direction to move towards the floor.
+		if (mCurrentState == ElevatorState.IDLE_STATE && floor != getCurrentFloor()) {
+			if (floor.getNumber() > mCurrentFloor.getNumber()){
+				mCurrentDirection = Direction.MOVING_UP;
+			}
+			else{
+				mCurrentDirection = Direction.MOVING_DOWN;
+			}
+		}
+
+		// Done: set a floor request for the given floor, and schedule a state change to ACCELERATING immediately.
+		scheduleStateChange(ElevatorState.ACCELERATING, 0);
 		
 	}
 	
@@ -162,8 +174,11 @@ public class Elevator implements FloorObserver {
 		if (mCurrentState == ElevatorState.IDLE_STATE){
 			mCurrentDirection = direction;
 		}
+		for (ElevatorObserver e:mObservers) {
+			e.elevatorDecelerating(this);
+		}
 		// Done: then schedule an immediate state change to DOORS_OPENING.
-		mCurrentState = ElevatorState.DOORS_OPENING;
+		scheduleStateChange(ElevatorState.DOORS_OPEN, 0);
 	}
 	
 	

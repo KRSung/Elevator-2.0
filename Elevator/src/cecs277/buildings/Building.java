@@ -126,6 +126,7 @@ public class Building implements ElevatorObserver, FloorObserver {
 			if (e.isIdle()){
 				e.dispatchTo(floor);
 				elevatorDispatched = true;
+				break;
 			}
 		}
 
