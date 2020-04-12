@@ -51,8 +51,12 @@ public abstract class Passenger implements FloorObserver, ElevatorObserver {
 		if (floor.getWaitingPassengers().contains(this) && mCurrentState == PassengerState.WAITING_ON_FLOOR) {
 			Elevator.Direction elevatorDirection = elevator.getCurrentDirection();
 
-			// TODO: check if the elevator is either NOT_MOVING, or is going in the direction that this passenger wants.
+			// DONE: check if the elevator is either NOT_MOVING, or is going in the direction that this passenger wants.
 			// If so, this passenger becomes an observer of the elevator.
+			//FIXME this is a really nasty if statement but i think it does the job
+			if (elevator.getCurrentDirection() == Elevator.Direction.NOT_MOVING || ((elevator.getCurrentDirection() == Elevator.Direction.MOVING_UP) && (getDestination() > elevator.getCurrentFloor().getNumber())) || ((elevator.getCurrentDirection() == Elevator.Direction.MOVING_DOWN) && (getDestination() < elevator.getCurrentFloor().getNumber()))){
+				elevator.addObserver(this);
+			}
 
 		}
 		// This else should not happen if your code is correct. Do not remove this branch; it reveals errors in your code.
