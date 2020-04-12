@@ -3,6 +3,7 @@ package cecs277.passengers;
 import cecs277.elevators.Elevator;
 import cecs277.events.PassengerNextDestinationEvent;
 
+import cecs277.Simulation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class WorkerPassenger extends Passenger {
 	}
 	
 	/*
-	 TODO: implement this template method variant, which is called when the worker is leaving the elevator it
+	 DONE: implement this template method variant, which is called when the worker is leaving the elevator it
 	 is on. A Worker that is departing on floor 1 just leaves the building, printing a message to System.out.
 	 A Worker that is departing on any other floor removes the first destination in their list, and then schedules a
 	 PassengerNextDestinationEvent to occur when they are supposed to "reappear" (the first element of the durations list,
@@ -48,8 +49,18 @@ public class WorkerPassenger extends Passenger {
 	*/
 	@Override
 	protected void leavingElevator(Elevator elevator) {
-		if (){
 
+		//FIXME we probably have to remove the passenger as an observer of the elevator when the get out to the floor so i did that
+		mDestinations.remove(0);
+		elevator.removeObserver(this);
+		elevator.removePassenger(this);
+		if (elevator.getCurrentFloor().getNumber() == 1){
+			System.out.println("Worker " + getId() + " is leaving the building.");
+		} else {
+			Simulation s = elevator.getBuilding().getSimulation();
+			PassengerNextDestinationEvent ev = new PassengerNextDestinationEvent(mDurations.get(0), this, elevator.getCurrentFloor());
+			mDurations.remove(0);
+			s.scheduleEvent(ev);
 		}
 	}
 	

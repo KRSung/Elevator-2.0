@@ -11,7 +11,7 @@ import cecs277.events.PassengerNextDestinationEvent;
  * arrives on floor 1.
  */
 public class VisitorPassenger extends Passenger {
-	// TODO: add fields, constructors, and accessors to implement this class.
+	// DONE (i think): add fields, constructors, and accessors to implement this class.
 	private int destinationFloor, durationTime;
 
 	public VisitorPassenger(int destinationFloor, int durationTime) {
@@ -25,9 +25,7 @@ public class VisitorPassenger extends Passenger {
 	public int getDestination() {
 		// DONE: finish this method to return the visitor's destination, which changes to floor 1 when they
 		// "reappear".
-		int temp = destinationFloor;
-		destinationFloor = 1;
-		return temp;
+		return destinationFloor;
 	}
 	
 	// DONE: implement this template method variant. A Visitor will join an elevator whose passenger count is less than its capacity.
@@ -41,7 +39,7 @@ public class VisitorPassenger extends Passenger {
 	}
 	
 	/*
-	 TODO: implement this template method variant, which is called when the passenger is leaving the elevator it
+	 DONE: implement this template method variant, which is called when the passenger is leaving the elevator it
 	 is on. A Visitor that is departing on floor 1 just leaves the building, printing a message to System.out.
 	 A visitor that is departing on any other floor sets their new destination to floor 1, and then schedules a
 	 PassengerNextDestinationEvent to occur when they are supposed to "reappear" (their duration field).
@@ -56,6 +54,20 @@ public class VisitorPassenger extends Passenger {
 		
 		Schedules this passenger to reappear on this floor 10 seconds from now.
 		 */
+		//FIXME we probably have to remove the passenger as an observer of the elevator when the get out to the floor so i did that
+		elevator.removePassenger(this);
+		elevator.removeObserver(this);
+
+		if (elevator.getCurrentFloor().getNumber() == 1){
+			System.out.println("Visitor " + getId() + " is leaving the building.");
+		} else {
+			destinationFloor = 1;
+			Simulation s = elevator.getBuilding().getSimulation();
+			PassengerNextDestinationEvent ev = new PassengerNextDestinationEvent(durationTime, this, elevator.getCurrentFloor());
+			s.scheduleEvent(ev);
+			elevator.removeObserver(this);
+		}
+
 	}
 	
 	// DONE: return "Visitor heading to floor {destination}", replacing {destination} with the floor number.
