@@ -77,9 +77,6 @@ public abstract class Passenger implements FloorObserver, ElevatorObserver {
 			// DONE (almost): remove this passenger from the elevator, and as an observer of the elevator. Call the
 			// leavingElevator method to allow a derived class to do something when the passenger departs.
 			// Set the current state to BUSY.
-			elevator.removePassenger(this);
-			//IDK if this will work because we need to pass in a ElevatorObserver but i think passenger is a elevator observer??
-			elevator.removeObserver(this);
 			leavingElevator(elevator);
 			setState(PassengerState.BUSY);
 		}

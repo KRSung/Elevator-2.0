@@ -58,7 +58,8 @@ public class WorkerPassenger extends Passenger {
 			System.out.println("Worker " + getId() + " is leaving the building.");
 		} else {
 			Simulation s = elevator.getBuilding().getSimulation();
-			PassengerNextDestinationEvent ev = new PassengerNextDestinationEvent(mDurations.get(0), this, elevator.getCurrentFloor());
+			//FIXME i think we need to add the sim time to the duration
+			PassengerNextDestinationEvent ev = new PassengerNextDestinationEvent(s.currentTime() + mDurations.get(0), this, elevator.getCurrentFloor());
 			mDurations.remove(0);
 			s.scheduleEvent(ev);
 		}

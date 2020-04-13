@@ -63,7 +63,8 @@ public class VisitorPassenger extends Passenger {
 		} else {
 			destinationFloor = 1;
 			Simulation s = elevator.getBuilding().getSimulation();
-			PassengerNextDestinationEvent ev = new PassengerNextDestinationEvent(durationTime, this, elevator.getCurrentFloor());
+			//FIXME i think we need to add the sim time to the duration
+			PassengerNextDestinationEvent ev = new PassengerNextDestinationEvent(s.currentTime() + durationTime, this, elevator.getCurrentFloor());
 			s.scheduleEvent(ev);
 			elevator.removeObserver(this);
 		}
