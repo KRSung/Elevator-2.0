@@ -105,7 +105,7 @@ public class Floor implements ElevatorObserver {
 	public List<Passenger> getWaitingPassengers() {
 		return mPassengers;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Floor " + mNumber;
