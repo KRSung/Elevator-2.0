@@ -57,7 +57,7 @@ public class Elevator implements FloorObserver {
 	 */
 	private void scheduleStateChange(ElevatorState state, long timeFromNow) {
 		Simulation sim = mBuilding.getSimulation();
-		sim.scheduleEvent(new ElevatorStateEvent(sim.currentTime() + timeFromNow, state, this));
+		sim.scheduleEvent(new ElevatorStateEvent(timeFromNow + sim.currentTime(), state, this));
 	}
 	
 	/**
@@ -105,7 +105,7 @@ public class Elevator implements FloorObserver {
 				for (int i = 0; i < mObservers.size(); i++){
 					mObservers.get(i).elevatorDoorsOpened(this);
 				}
-				scheduleStateChange(ElevatorState.DOORS_CLOSING,   + (passengerChangeCount / 2) + 1);
+				scheduleStateChange(ElevatorState.DOORS_CLOSING,(passengerChangeCount / 2) + 1);
 				return;
 
 			case DOORS_CLOSING:
@@ -160,6 +160,7 @@ public class Elevator implements FloorObserver {
 				}
 				else if (mCurrentDirection == Direction.MOVING_DOWN) {
 					mCurrentFloor = mBuilding.getFloor(mCurrentFloor.getNumber() - 1);
+
 					if (mRequestedFloors[mCurrentFloor.getNumber() - 1] ||
 							mCurrentFloor.directionIsPressed(Direction.MOVING_DOWN) ||
 							mCurrentFloor.getNumber() == 1) {
@@ -176,6 +177,8 @@ public class Elevator implements FloorObserver {
 					mCurrentFloor.clearDirection(Direction.MOVING_UP);
 					if ( !(mCurrentFloor.directionIsPressed(Direction.MOVING_UP) || hasRequestedFloorsUp())
 							&& mCurrentFloor.directionIsPressed(Direction.MOVING_DOWN) ){
+						mCurrentFloor.elevatorDecelerating(this);
+						scheduleStateChange(ElevatorState.DOORS_OPENING, 3);
 						mCurrentDirection = Direction.MOVING_DOWN;
 						mCurrentFloor.elevatorDecelerating(this);
 						scheduleStateChange(ElevatorState.DOORS_OPENING, 3);
@@ -187,6 +190,8 @@ public class Elevator implements FloorObserver {
 				else {
 					if ( !(mCurrentFloor.directionIsPressed(Direction.MOVING_DOWN) || hasRequestedFloorsDown())
 							&& mCurrentFloor.directionIsPressed(Direction.MOVING_UP) ){
+						mCurrentFloor.elevatorDecelerating(this);
+						scheduleStateChange(ElevatorState.DOORS_OPENING, 3);
 						mCurrentDirection = Direction.MOVING_UP;
 						mCurrentFloor.elevatorDecelerating(this);
 						scheduleStateChange(ElevatorState.DOORS_OPENING, 3);
@@ -310,18 +315,13 @@ public class Elevator implements FloorObserver {
 			mCurrentDirection = direction;
 		}
 
-//		ArrayList<ElevatorObserver> temp = mObservers;
-//		for (ElevatorObserver e : mObservers) {
 		for (int i = 0; i < mObservers.size(); i++){
 			mObservers.get(i).elevatorDecelerating(this);
 		}
 		// Done: then schedule an immediate state change to DOORS_OPENING.
 		scheduleStateChange(ElevatorState.DOORS_OPENING, 0);
 	}
-	
-	
-	
-	
+
 	// Voodoo magic.
 	@Override
 	public String toString() {
