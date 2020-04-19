@@ -62,9 +62,8 @@ public class Building implements ElevatorObserver, FloorObserver {
 
 			visualRepresentation.append(" ");
 
-//            displays the passengers waiting on the building floor
-			for(int k = 0; k < getFloorCount(); k++){
-				visualRepresentation.append(" ").append(mFloors.get(k));
+			for (Passenger p : mFloors.get(i - 1).getWaitingPassengers()) {
+				visualRepresentation.append(" ").append(p.getDestination());
 			}
 
 			visualRepresentation.append("\n");
@@ -73,6 +72,7 @@ public class Building implements ElevatorObserver, FloorObserver {
 		for (int i = 0; i < mElevators.size(); i++){
 			visualRepresentation.append(mElevators.get(i)).append("\n");
 		}
+		System.out.println(visualRepresentation.toString());
 		return visualRepresentation.toString();
 	}
 	

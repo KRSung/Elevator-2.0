@@ -80,10 +80,10 @@ public class Floor implements ElevatorObserver {
 		int pDestination = p.getDestination();
 
 		if (pDestination > getNumber()){
-			upButtonPressed = true;
+			requestDirection(Elevator.Direction.MOVING_UP);
 		}
 		else{
-			downButtonPressed = true;
+			requestDirection(Elevator.Direction.MOVING_DOWN);
 		}
 		
 		// Done: call requestDirection with the appropriate direction for this passenger's destination.

@@ -53,7 +53,7 @@ public class SpawnPassengerEvent extends SimulationEvent {
 		 with a scheduled time that is X seconds in the future, where X is a uniform random integer from
 		 1 to 30 inclusive.
 		*/
-		mBuilding.getSimulation().scheduleEvent(new SpawnPassengerEvent(r.nextInt(30) + 1, mBuilding));
+		mBuilding.getSimulation().scheduleEvent(new SpawnPassengerEvent(sim.currentTime() + r.nextInt(30) + 1, mBuilding));
 
 	}
 	

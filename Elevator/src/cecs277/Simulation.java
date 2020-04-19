@@ -84,6 +84,8 @@ public class Simulation {
 			}
 
 			// DONE: print the Building after simulating the requested time.
+
+			System.out.println("Building");
 			b.toString();
 
 			//i didnt want to check with an if statement each iteration
