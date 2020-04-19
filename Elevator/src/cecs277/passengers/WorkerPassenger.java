@@ -50,15 +50,11 @@ public class WorkerPassenger extends Passenger {
 	@Override
 	protected void leavingElevator(Elevator elevator) {
 
-		//FIXME we probably have to remove the passenger as an observer of the elevator when the get out to the floor so i did that
-		mDestinations.remove(0);
-		elevator.removeObserver(this);
-		elevator.removePassenger(this);
 		if (elevator.getCurrentFloor().getNumber() == 1){
 			System.out.println("Worker " + getId() + " is leaving the building.");
 		} else {
+			mDestinations.remove(0);
 			Simulation s = elevator.getBuilding().getSimulation();
-			//FIXME i think we need to add the sim time to the duration
 			PassengerNextDestinationEvent ev = new PassengerNextDestinationEvent(s.currentTime() + mDurations.get(0), this, elevator.getCurrentFloor());
 			mDurations.remove(0);
 			s.scheduleEvent(ev);

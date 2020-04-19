@@ -6,13 +6,8 @@ import cecs277.Simulation;
 import cecs277.passengers.VisitorPassenger;
 import cecs277.passengers.WorkerPassenger;
 
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * A simulation event that adds a new random passenger on floor 1, and then schedules the next spawn event.
@@ -69,7 +64,7 @@ public class SpawnPassengerEvent extends SimulationEvent {
 		int x = r.nextInt(mBuilding.getFloorCount() - 1) + 2;
 		// Look up the documentation for the .nextGaussian() method of the Random class.
 		//source: https://www.javamex.com/tutorials/random_numbers/gaussian_distribution_2.shtml
-		int y = (int) (r.nextGaussian() * 20 + 60);
+		int y = (int) (r.nextGaussian() * 1200 + 3600);
 		return new VisitorPassenger(x, y);
 	}
 	
@@ -104,7 +99,7 @@ public class SpawnPassengerEvent extends SimulationEvent {
 		//TODO i may have not done this right bc look at the private static long variables i didnt use and the other imported stuff not used
 		long y;
 		for (int i = 0; i < x; i++){
-			y = (long) (r.nextGaussian() * 3 + 10);
+			y = (long) (r.nextGaussian() * 180 + 600);
 			durations.add(y);
 		}
 

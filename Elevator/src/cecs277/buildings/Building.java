@@ -104,7 +104,7 @@ public class Building implements ElevatorObserver, FloorObserver {
 		// DONE: if mWaitingFloors is not empty, remove the first entry from the queue and dispatch the elevator to that floor.
 		//added the !
 		if (!mWaitingFloors.isEmpty()){
-			elevator.dispatchTo(mFloors.get(mWaitingFloors.remove()));
+			elevator.dispatchTo(mFloors.get(mWaitingFloors.remove() - 1));
 		}
 	}
 	
@@ -113,6 +113,8 @@ public class Building implements ElevatorObserver, FloorObserver {
 		if (!mWaitingFloors.contains(sender.getNumber())){
 			mWaitingFloors.add(sender.getNumber());
 		}
+//		System.out.println("\nElevator Arriving " + sender.getNumber() + " mWaitingFloors " + mWaitingFloors.toString() + "\n");
+
 		// DONE: add the floor mWaitingFloors if it is not already in the queue.
 	}
 	
@@ -133,6 +135,7 @@ public class Building implements ElevatorObserver, FloorObserver {
 		if (!elevatorDispatched) {
 			mWaitingFloors.add(floor.getNumber());
 		}
+//		System.out.println("\nDirection Requested " + direction + " Floor " + floor.getNumber() + " mWaitingFloors " + mWaitingFloors.toString() + "\n");
 
 		// DONE: go through each elevator. If an elevator is idle, dispatch it to the given floor.
 		// DONE: if no elevators are idle, then add the floor number to the mWaitingFloors queue.

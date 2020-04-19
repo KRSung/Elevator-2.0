@@ -19,6 +19,7 @@ public class VisitorPassenger extends Passenger {
 		// DONE: change this constructor's  body.
 		this.destinationFloor = destinationFloor;
 		this.durationTime = durationTime;
+//		System.out.println(durationTime);
 	}
 	
 	@Override
@@ -31,7 +32,7 @@ public class VisitorPassenger extends Passenger {
 	// DONE: implement this template method variant. A Visitor will join an elevator whose passenger count is less than its capacity.
 	@Override
 	protected boolean willBoardElevator(Elevator elevator) {
-		if (elevator.getPassengerCount() < 10){
+		if (elevator.getPassengerCount() < elevator.getCapacity()){
 			return true;
 		} else {
 			return false;
@@ -54,19 +55,13 @@ public class VisitorPassenger extends Passenger {
 		
 		Schedules this passenger to reappear on this floor 10 seconds from now.
 		 */
-		//FIXME we probably have to remove the passenger as an observer of the elevator when the get out to the floor so i did that
-		elevator.removePassenger(this);
-		elevator.removeObserver(this);
-
 		if (elevator.getCurrentFloor().getNumber() == 1){
 			System.out.println("Visitor " + getId() + " is leaving the building.");
 		} else {
 			destinationFloor = 1;
 			Simulation s = elevator.getBuilding().getSimulation();
-			//FIXME i think we need to add the sim time to the duration
 			PassengerNextDestinationEvent ev = new PassengerNextDestinationEvent(s.currentTime() + durationTime, this, elevator.getCurrentFloor());
 			s.scheduleEvent(ev);
-			elevator.removeObserver(this);
 		}
 
 	}

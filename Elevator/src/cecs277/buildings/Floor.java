@@ -31,14 +31,16 @@ public class Floor implements ElevatorObserver {
 	public void requestDirection(Elevator.Direction direction) {
 		if (direction == Elevator.Direction.MOVING_UP && !upButtonPressed) {
 			upButtonPressed = true;
-//			for( FloorObserver floor: mObservers ){
-			for (int i = 0; i < mObservers.size(); i++){
-				mObservers.get(i).directionRequested(this, Elevator.Direction.MOVING_UP);
+			for( FloorObserver floor: mObservers ){
+//			for (int i = 0; i < mObservers.size(); i++){
+				floor.directionRequested(this, Elevator.Direction.MOVING_UP);
 			}
 		}
 		else if (direction == Elevator.Direction.MOVING_DOWN && !downButtonPressed) {
 			downButtonPressed = true;
 			for( FloorObserver floor: mObservers ){
+//			for (int i = 0; i < mObservers.size(); i++){
+//				mObservers.get(i).directionRequested(this, Elevator.Direction.MOVING_UP);
 				floor.directionRequested(this, Elevator.Direction.MOVING_DOWN);
 			}
 		}
@@ -125,11 +127,13 @@ public class Floor implements ElevatorObserver {
 	@Override
 	public void elevatorDecelerating(Elevator elevator) {
 		// Done: if the elevator is arriving at THIS FLOOR, alert all the floor's observers that elevatorArriving.
-		for(FloorObserver floor: mObservers){
-			floor.elevatorArriving(this, elevator);
+		if (elevator.getCurrentFloor() == this) {
+			for (FloorObserver floor : mObservers) {
+				floor.elevatorArriving(this, elevator);
+			}
+			// Done: then clear the elevator's current direction from this floor's requested direction buttons.
+			clearDirection(elevator.getCurrentDirection());
 		}
-		// Done: then clear the elevator's current direction from this floor's requested direction buttons.
-		clearDirection(elevator.getCurrentDirection());
 	}
 	
 	@Override
