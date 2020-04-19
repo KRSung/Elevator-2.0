@@ -111,8 +111,8 @@ public class Elevator implements FloorObserver {
 					mObservers.get(i).elevatorDoorsOpened(this);
 				}
 
-				System.out.println(passengerChangeCount);
-				System.out.println(passengerChangeCount /2 + 1);
+//				System.out.println(passengerChangeCount);
+//				System.out.println(passengerChangeCount /2 + 1);
 //				s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + (passengerChangeCount / 2) + 1,
 //						ElevatorState.DOORS_CLOSING, this));
 				scheduleStateChange(ElevatorState.DOORS_CLOSING, s.currentTime() + (passengerChangeCount / 2) + 1);
@@ -261,11 +261,9 @@ public class Elevator implements FloorObserver {
 			else{
 				mCurrentDirection = Direction.MOVING_DOWN;
 			}
+			// Done: set a floor request for the given floor, and schedule a state change to ACCELERATING immediately.
+			scheduleStateChange(ElevatorState.ACCELERATING, 0);
 		}
-
-		// Done: set a floor request for the given floor, and schedule a state change to ACCELERATING immediately.
-		scheduleStateChange(ElevatorState.ACCELERATING, 0);
-		
 	}
 	
 	// Simple accessors
@@ -345,7 +343,7 @@ public class Elevator implements FloorObserver {
 			mObservers.get(i).elevatorDecelerating(this);
 		}
 		// Done: then schedule an immediate state change to DOORS_OPENING.
-		scheduleStateChange(ElevatorState.DOORS_OPEN, 0);
+		scheduleStateChange(ElevatorState.DOORS_OPENING, 0);
 	}
 	
 	
