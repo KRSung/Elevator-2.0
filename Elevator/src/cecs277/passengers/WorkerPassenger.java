@@ -73,7 +73,7 @@ public class WorkerPassenger extends Passenger {
 	// DONE: return "Worker heading to floor {destination}", replacing {destination} with the first destination floor number.
 	@Override
 	public String toString() {
-		return "Worker heading to floor " + getDestination() + ".";
+		return "Worker " + this.getId() + " heading to floor " + getDestination();
 	}
 	
 }

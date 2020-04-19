@@ -74,7 +74,7 @@ public class VisitorPassenger extends Passenger {
 	// DONE: return "Visitor heading to floor {destination}", replacing {destination} with the floor number.
 	@Override
 	public String toString() {
-		return "Visitor heading to floor " + getDestination() + ".";
+		return "Visitor " + this.getId() + " heading to floor " + getDestination();
 	}
 	
 	@Override

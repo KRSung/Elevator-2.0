@@ -66,13 +66,15 @@ public class Elevator implements FloorObserver {
 	public void addPassenger(Passenger passenger) {
 		// Done: add the passenger's destination to the set of requested floors.
 		mPassengers.add(passenger);
-		mRequestedFloors[passenger.getDestination() + 1] = true;
+		//FIXME +1 didnt work so i changed it to -1
+		mRequestedFloors[passenger.getDestination() - 1] = true;
 		passengerChangeCount++;
 	}
-	
+
 	public void removePassenger(Passenger passenger) {
 		mPassengers.remove(passenger);
-		mRequestedFloors[passenger.getDestination() + 1] = false;
+		//FIXME +1 didnt work so i changed it to -1
+		mRequestedFloors[passenger.getDestination() - 1] = false;
 		passengerChangeCount++;
 	}
 	
@@ -95,8 +97,9 @@ public class Elevator implements FloorObserver {
 				return;
 
 			case DOORS_OPENING:
-				s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
-						ElevatorState.DOORS_OPEN, this));
+//				s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
+//						ElevatorState.DOORS_OPEN, this));
+				scheduleStateChange(ElevatorState.DOORS_OPEN, s.currentTime() + 2);
 
 				return;
 
@@ -108,41 +111,51 @@ public class Elevator implements FloorObserver {
 					mObservers.get(i).elevatorDoorsOpened(this);
 				}
 
-				s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + (passengerChangeCount / 2) + 1,
-						ElevatorState.DOORS_CLOSING, this));
+				System.out.println(passengerChangeCount);
+				System.out.println(passengerChangeCount /2 + 1);
+//				s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + (passengerChangeCount / 2) + 1,
+//						ElevatorState.DOORS_CLOSING, this));
+				scheduleStateChange(ElevatorState.DOORS_CLOSING, s.currentTime() + (passengerChangeCount / 2) + 1);
 
 				return;
 
 			case DOORS_CLOSING:
 				if (mCurrentDirection == Direction.MOVING_DOWN ) {
 					if (hasRequestedFloorsDown()){
-						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
-								ElevatorState.ACCELERATING, this));
+//						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
+//								ElevatorState.ACCELERATING, this));
+						scheduleStateChange(ElevatorState.ACCELERATING, s.currentTime() + 2);
+
 					}
 					else if (hasRequestedFloorsUp()) {
-						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
-								ElevatorState.DOORS_OPENING, this));
+//						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
+//								ElevatorState.DOORS_OPENING, this));
+						scheduleStateChange(ElevatorState.DOORS_OPENING, s.currentTime() + 2);
 						mCurrentDirection = Direction.MOVING_UP;
 					}
 					else{
-						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
-								ElevatorState.IDLE_STATE, this));
+//						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
+//								ElevatorState.IDLE_STATE, this));
+						scheduleStateChange(ElevatorState.IDLE_STATE, s.currentTime() + 2);
 						mCurrentDirection = Direction.NOT_MOVING;
 					}
 				}
 				else if (mCurrentDirection == Direction.MOVING_UP) {
 					if (hasRequestedFloorsUp()){
-						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
-								ElevatorState.ACCELERATING, this));
+//						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
+//								ElevatorState.ACCELERATING, this));
+						scheduleStateChange(ElevatorState.ACCELERATING, s.currentTime() + 2);
 					}
 					else if (hasRequestedFloorsDown()) {
-						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
-								ElevatorState.DOORS_OPENING, this));
+//						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
+//								ElevatorState.DOORS_OPENING, this));
+						scheduleStateChange(ElevatorState.DOORS_OPENING, s.currentTime() + 2);
 						mCurrentDirection = Direction.MOVING_DOWN;
 					}
 					else{
-						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
-								ElevatorState.IDLE_STATE, this));
+//						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
+//								ElevatorState.IDLE_STATE, this));
+						scheduleStateChange(ElevatorState.IDLE_STATE, s.currentTime() + 2);
 						mCurrentDirection = Direction.NOT_MOVING;
 					}
 				}
@@ -150,8 +163,10 @@ public class Elevator implements FloorObserver {
 
 			case ACCELERATING:
 				//go to moving
-				s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
-						ElevatorState.MOVING, this));
+//				s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
+//						ElevatorState.MOVING, this));
+				scheduleStateChange(ElevatorState.MOVING, s.currentTime() + 2);
+
 				return;
 
 			case MOVING:
@@ -159,24 +174,28 @@ public class Elevator implements FloorObserver {
 					mCurrentFloor = mBuilding.getFloor(mCurrentFloor.getNumber() + 1);
 					if (mRequestedFloors[mCurrentFloor.getNumber() - 1] ||
 							mCurrentFloor.directionIsPressed(Direction.MOVING_UP)) {
-						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
-								ElevatorState.DECELERATING, this));
+//						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
+//								ElevatorState.DECELERATING, this));
+						scheduleStateChange(ElevatorState.DECELERATING, s.currentTime() + 2);
 					}
 					else{
-						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
-								ElevatorState.MOVING, this));
+//						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
+//								ElevatorState.MOVING, this));
+						scheduleStateChange(ElevatorState.MOVING, s.currentTime() + 2);
 					}
 				}
 				else if (mCurrentDirection == Direction.MOVING_DOWN) {
 					mCurrentFloor = mBuilding.getFloor(mCurrentFloor.getNumber() - 1);
 					if (mRequestedFloors[mCurrentFloor.getNumber() - 1] ||
 							mCurrentFloor.directionIsPressed(Direction.MOVING_DOWN)) {
-						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
-								ElevatorState.DECELERATING, this));
+//						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
+//								ElevatorState.DECELERATING, this));
+						scheduleStateChange(ElevatorState.DECELERATING, s.currentTime() + 2);
 					}
 					else{
-						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
-								ElevatorState.MOVING, this));
+//						s.scheduleEvent(new ElevatorStateEvent(s.currentTime() + 2,
+//								ElevatorState.MOVING, this));
+						scheduleStateChange(ElevatorState.MOVING, s.currentTime() + 2);
 					}
 				}
 				return;
