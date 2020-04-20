@@ -92,14 +92,17 @@ public class Elevator implements FloorObserver {
 				for (ElevatorObserver o : mObservers) {
 					o.elevatorWentIdle(this);
 				}
-				System.out.println(mBuilding.getmWaitingFloors().toString());
+//				System.out.println(mBuilding.getmWaitingFloors().toString());
 
 				return;
 
 			case DOORS_OPENING:
 				scheduleStateChange(ElevatorState.DOORS_OPEN,2);
-				System.out.println(mBuilding.getmWaitingFloors().toString());
-
+//				System.out.println("mWaitingFloors: " + mBuilding.getmWaitingFloors().toString());
+				System.out.printf("Waiting Passengers: ");
+//				for (Passenger p : getCurrentFloor().getWaitingPassengers())
+//					System.out.printf(" " + p.getDestination());
+//				System.out.println();
 				return;
 
 			case DOORS_OPEN:
@@ -110,8 +113,11 @@ public class Elevator implements FloorObserver {
 					o.elevatorDoorsOpened(this);
 				}
 				scheduleStateChange(ElevatorState.DOORS_CLOSING,(passengerChangeCount / 2) + 1);
-
-				System.out.println(mBuilding.getmWaitingFloors().toString());
+				System.out.printf("Waiting Passengers: ");
+//				for (Passenger p : getCurrentFloor().getWaitingPassengers())
+//					System.out.printf(" " + p.getDestination());
+//				System.out.println();
+//				System.out.println(mBuilding.getmWaitingFloors().toString());
 				return;
 
 			case DOORS_CLOSING:
@@ -128,12 +134,12 @@ public class Elevator implements FloorObserver {
 						scheduleStateChange(ElevatorState.IDLE_STATE,2);
 					}
 				}
-				else /*if (mCurrentDirection == Direction.MOVING_UP)*/ {
-					if (mCurrentDirection != Direction.MOVING_UP){
-						System.out.println("\n\n-----------------------------------------------------------------------------------\n\n");
-						System.out.println("ERROR: Case Doors_closing: Expected Direction Moving Up, Received " + mCurrentDirection);
-						System.out.println("\n\n-----------------------------------------------------------------------------------\n\n");
-					}
+				else if (mCurrentDirection == Direction.MOVING_UP) {
+//					if (mCurrentDirection != Direction.MOVING_UP){
+//						System.out.println("\n\n-----------------------------------------------------------------------------------\n\n");
+//						System.out.println("ERROR: Case Doors_closing: Expected Direction Moving Up, Received " + mCurrentDirection);
+//						System.out.println("\n\n-----------------------------------------------------------------------------------\n\n");
+//					}
 					if (hasRequestedFloorsUp()){
 						scheduleStateChange(ElevatorState.ACCELERATING,2);
 					}
@@ -146,9 +152,9 @@ public class Elevator implements FloorObserver {
 						scheduleStateChange(ElevatorState.IDLE_STATE,2);
 					}
 				}
-//				else {
-//					scheduleStateChange(ElevatorState.IDLE_STATE,2);
-//				}
+				else {
+					scheduleStateChange(ElevatorState.IDLE_STATE,2);
+				}
 
 				return;
 
