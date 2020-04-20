@@ -87,7 +87,10 @@ public class Building implements ElevatorObserver, FloorObserver {
 	public Simulation getSimulation() {
 		return mSimulation;
 	}
-	
+
+	public Queue<Integer> getmWaitingFloors(){
+		return mWaitingFloors;
+	}
 	
 	@Override
 	public void elevatorDecelerating(Elevator elevator) {
@@ -110,9 +113,9 @@ public class Building implements ElevatorObserver, FloorObserver {
 	
 	@Override
 	public void elevatorArriving(Floor sender, Elevator elevator) {
-		if (!mWaitingFloors.contains(sender.getNumber())){
-			mWaitingFloors.add(sender.getNumber());
-		}
+//		if (!mWaitingFloors.contains(sender.getNumber())){
+//			mWaitingFloors.add(sender.getNumber());
+//		}
 //		System.out.println("\nElevator Arriving " + sender.getNumber() + " mWaitingFloors " + mWaitingFloors.toString() + "\n");
 
 		// DONE: add the floor mWaitingFloors if it is not already in the queue.

@@ -92,11 +92,13 @@ public class Elevator implements FloorObserver {
 				for (ElevatorObserver o : mObservers) {
 					o.elevatorWentIdle(this);
 				}
+				System.out.println(mBuilding.getmWaitingFloors().toString());
 
 				return;
 
 			case DOORS_OPENING:
 				scheduleStateChange(ElevatorState.DOORS_OPEN,2);
+				System.out.println(mBuilding.getmWaitingFloors().toString());
 
 				return;
 
@@ -108,6 +110,8 @@ public class Elevator implements FloorObserver {
 					o.elevatorDoorsOpened(this);
 				}
 				scheduleStateChange(ElevatorState.DOORS_CLOSING,(passengerChangeCount / 2) + 1);
+
+				System.out.println(mBuilding.getmWaitingFloors().toString());
 				return;
 
 			case DOORS_CLOSING:
@@ -196,7 +200,7 @@ public class Elevator implements FloorObserver {
 				return;
 
 			case DECELERATING:
-//				mRequestedFloors[mCurrentFloor.getNumber() - 1] = false;
+				mRequestedFloors[mCurrentFloor.getNumber() - 1] = false;
 				if ( mCurrentDirection == Direction.MOVING_UP ) {
 //					mCurrentFloor.clearDirection(Direction.MOVING_UP);
 					if (mCurrentFloor.directionIsPressed(Direction.MOVING_UP) || hasRequestedFloorsUp()) {
@@ -268,6 +272,7 @@ public class Elevator implements FloorObserver {
 	 * Sends an idle elevator to the given floor.
 	 */
 	public void dispatchTo(Floor floor) {
+		System.out.println("============DISPATCH TO: " + floor.getNumber() + "===============");
 		// Done: if we are currently idle and not on the given floor, change our direction to move towards the floor.
 		if (mCurrentState == ElevatorState.IDLE_STATE && floor != getCurrentFloor()) {
 			if (floor.getNumber() > mCurrentFloor.getNumber()){
