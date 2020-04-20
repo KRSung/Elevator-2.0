@@ -42,7 +42,11 @@ public class Simulation {
 	}
 	
 	public void startSimulation(Scanner input) {
-		Building b = new Building(10, 1, this);
+		System.out.println("Enter number of floors: ");
+		int floors = input.nextInt();
+		System.out.println("Enter number of elevators: ");
+		int elevCount = input.nextInt();
+		Building b = new Building(floors, elevCount, this);
 		SpawnPassengerEvent ev = new SpawnPassengerEvent(0, b);
 		scheduleEvent(ev);
 		

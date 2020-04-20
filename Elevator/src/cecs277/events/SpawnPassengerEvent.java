@@ -65,7 +65,7 @@ public class SpawnPassengerEvent extends SimulationEvent {
 		// Look up the documentation for the .nextGaussian() method of the Random class.
 		//source: https://www.javamex.com/tutorials/random_numbers/gaussian_distribution_2.shtml
 		int y = (int) (r.nextGaussian() * 1200 + 3600);
-		System.out.println("Duration " + y);
+//		System.out.println("Duration " + y);
 		return new VisitorPassenger(x, y);
 	}
 	
