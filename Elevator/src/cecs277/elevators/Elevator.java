@@ -100,9 +100,9 @@ public class Elevator implements FloorObserver {
 				scheduleStateChange(ElevatorState.DOORS_OPEN,2);
 //				System.out.println("mWaitingFloors: " + mBuilding.getmWaitingFloors().toString());
 				System.out.printf("Waiting Passengers: ");
-//				for (Passenger p : getCurrentFloor().getWaitingPassengers())
-//					System.out.printf(" " + p.getDestination());
-//				System.out.println();
+				for (Passenger p : getCurrentFloor().getWaitingPassengers())
+					System.out.printf(" " + p.getDestination());
+				System.out.println();
 				return;
 
 			case DOORS_OPEN:
@@ -114,9 +114,9 @@ public class Elevator implements FloorObserver {
 				}
 				scheduleStateChange(ElevatorState.DOORS_CLOSING,(passengerChangeCount / 2) + 1);
 				System.out.printf("Waiting Passengers: ");
-//				for (Passenger p : getCurrentFloor().getWaitingPassengers())
-//					System.out.printf(" " + p.getDestination());
-//				System.out.println();
+				for (Passenger p : getCurrentFloor().getWaitingPassengers())
+					System.out.printf(" " + p.getDestination());
+				System.out.println();
 //				System.out.println(mBuilding.getmWaitingFloors().toString());
 				return;
 
@@ -379,7 +379,7 @@ public class Elevator implements FloorObserver {
 	public String toString() {
 		return "Elevator " + mNumber + " - " + mCurrentFloor + " - " + mCurrentState + " - " + mCurrentDirection + " - "
 		 + "[" + mPassengers.stream().map(p -> Integer.toString(p.getDestination())).collect(Collectors.joining(", "))
-		 + "]";
+		 + "] [" + mPassengers.stream().map(p -> Integer.toString(p.getId())).collect(Collectors.joining(", ")) + "]";
 	}
 	
 }

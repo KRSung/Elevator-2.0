@@ -18,6 +18,7 @@ public abstract class Passenger implements FloorObserver, ElevatorObserver {
 	
 	// A cute trick for assigning unique IDs to each object that is created. (See the constructor.)
 	private static int mNextId;
+	private int mCurrentFloor;
 	protected static int nextPassengerId() {
 		return ++mNextId;
 	}
@@ -28,6 +29,7 @@ public abstract class Passenger implements FloorObserver, ElevatorObserver {
 	public Passenger() {
 		mIdentifier = nextPassengerId();
 		mCurrentState = PassengerState.WAITING_ON_FLOOR;
+		mCurrentFloor = 1;
 	}
 	
 	public void setState(PassengerState state) {
@@ -87,11 +89,15 @@ public abstract class Passenger implements FloorObserver, ElevatorObserver {
 			leavingElevator(elevator);
 			setState(PassengerState.BUSY);
 
+			//TODO
+			mCurrentFloor = elevator.getCurrentFloor().getNumber();
+			//TODO
+
 		}
 
 		// The elevator has arrived on the floor we are waiting on. If the elevator has room for us, remove ourselves
 		// from the floor, and enter the elevator.
-		else if (mCurrentState == PassengerState.WAITING_ON_FLOOR) {
+		else if (mCurrentState == PassengerState.WAITING_ON_FLOOR  && elevator.getCurrentFloor().getNumber() == mCurrentFloor) {
 			// DONE: determine if the passenger will board the elevator using willBoardElevator.
 			// If so, remove the passenger from the current floor, and as an observer of the current floor;
 			// then add the passenger as an observer of and passenger on the elevator. Then set the mCurrentState
